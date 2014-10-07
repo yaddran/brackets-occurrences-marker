@@ -10,7 +10,9 @@ Installation
 Install using Extension Manager in the File menu.
 
 If you wish to manually install the extension you can use two options:
+
 1. Use Download ZIP to download zipped extension from github and then open Extension Manager in Brackets and drag the file there
+
 2. Use Download ZIP to download zipped extension from github and then open Extension Folder from Brackets (Help -> Show Extension Folder). Unzip the file into the user subfolder.
 
 

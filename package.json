@@ -3,9 +3,9 @@
     "title": "Occurrences Marker",
     "description": "Marks all occurrences of a selected text or the word under the cursor with a small delay so that it does not interfere with edit. Configurable through the Edit menu.",
     "keywords": ["occurrences", "mark"],
-    "homepage": "https://github.com/yaddran",
+    "homepage": "https://github.com/yaddran/brackets-occurrences-marker",
     "version": "1.0.0",
-    "author": "Jadran Josimovic <yaddran@gmail.com> (http://www.thevirtual.eu)",
+    "author": "Jadran Josimovic <yaddran@gmail.com> (https://github.com/yaddran)",
     "license": "MIT",
     "engines": {
         "brackets": ">=0.43.0"

@@ -1,0 +1,38 @@
+<div class="about-dialog modal instance in thevirtualeuoccur-preferences">
+    <div class="modal-header">
+        <div class="dialog-title">{{Strings.TITLE}}</div>
+    </div>
+    <div class="modal-body">
+        <div class="field-container">
+            <label>
+                <input type="checkbox" id="thevirtualeuoccurEnabled" {{#enabled}}checked="checked"{{/enabled}}/> {{Strings.ENABLED}}
+            </label>
+         </div>
+        <div class="field-container">
+            <label>
+                {{Strings.EXCLUDE}}
+                <div class="checklist" id="thevirtualeuoccurExcludeChecklist"></div>
+            </label>
+         </div><br/>
+        <div class="field-container">
+            <label>
+                <input type="checkbox" id="thevirtualeuoccurSelectedOnly" {{#selected_only}}checked="checked"{{/selected_only}}/> {{Strings.SELECTED_ONLY}}
+            </label>
+         </div><br/>
+        <div class="field-container">
+            <label>
+                {{Strings.BACKGROUND_COLOR}}:<br/>
+                <input type="text" id="thevirtualeuoccurBackgroundColor" value="{{background_color}}"/>
+            </label>
+         </div>
+        <div class="field-container">
+            <label>
+                <input type="checkbox" id="thevirtualeuoccurAnim" {{#anim}}checked="checked"{{/anim}}/> {{Strings.ANIM}}
+            </label>
+         </div><br/>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.DONE}}</button>
+    </div>
+</div>

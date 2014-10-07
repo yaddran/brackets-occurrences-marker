@@ -1,0 +1,22 @@
+{
+    "name": "thevirtual.eu.occur",
+    "title": "Occurrences Marker",
+    "description": "Marks all occurrences of a selected text or the word under the cursor with a small delay so that it does not interfere with edit. Configurable through the Edit menu.",
+    "keywords": ["occurrences", "mark"],
+    "homepage": "https://github.com/yaddran",
+    "version": "1.0.0",
+    "author": "Jadran Josimovic <yaddran@gmail.com> (http://www.thevirtual.eu)",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=0.43.0"
+    },
+    "i18n": ["en", "nl", "sr"],
+    "package-i18n": {
+        "nl": {
+            "description": "Markeert alle voorkomens van een geselecteerde tekst of het woord onder de cursor met een korte vertraging, dus het interfereert niet met bewerken. Configuratie via het Edit menu."
+        },
+        "sr": {
+            "description": "Oznacava sva pojavljivanja oznacenog teksta ili reci ispod kursora sa malom pauzom da ne bi uticalo na kucanje. Podesavanja u Edit meniju."
+        }
+    }
+}

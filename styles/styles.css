@@ -1,0 +1,17 @@
+.thevirtualeuoccur-highlighting .thevirtualeuoccur {
+    border-radius: 3px;
+}
+
+.thevirtualeuoccur-highlighting .marking {
+    background-color: #f5ee92;
+}
+/*marking_back_color#f5ee92marking_back_color*/
+
+.thevirtualeuoccur-preferences label {
+    line-height: 20px;
+}
+
+.thevirtualeuoccur-preferences .checklist {
+    height: 150px;
+    overflow: auto;
+}

@@ -198,15 +198,15 @@ define(function (require, exports, module) {
     function handleActiveEditorChange($event, current, previous) {
         if (previous !== null) {
             $(previous.getRootElement()).removeClass('thevirtualeuoccur-highlighting');
-            $(previous.document).off('.thevirtualeuoccur');
-            $(previous).off('.thevirtualeuoccur');
+            previous.document.off('.thevirtualeuoccur');
+            previous.off('.thevirtualeuoccur');
             clearOccurrences(previous);
             ScrollTrackMarkers.setVisible(previous, false);
         }
 
         if (current !== null) {
-            $(current).on('cursorActivity.thevirtualeuoccur', handleNewCursorPosition);
-            $(current.document).on('languageChanged.thevirtualeuoccur', handleLanguageChange);
+            current.on('cursorActivity.thevirtualeuoccur', handleNewCursorPosition);
+            current.document.on('languageChanged.thevirtualeuoccur', handleLanguageChange);
             $(current.getRootElement()).addClass('thevirtualeuoccur-highlighting');
             applyNewSettings();
         }
@@ -277,7 +277,7 @@ define(function (require, exports, module) {
         CommandManager.register(STRINGS.TITLE, PREFERENCES, onPreferencesOpen);
         Menus.getMenu(Menus.AppMenuBar.EDIT_MENU).addMenuItem(PREFERENCES);
 
-        $(EditorManager).on('activeEditorChange', handleActiveEditorChange);
+        EditorManager.on('activeEditorChange', handleActiveEditorChange);
         handleActiveEditorChange(null, EditorManager.getCurrentFullEditor(), null);
     });
 });

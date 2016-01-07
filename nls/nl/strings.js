@@ -29,6 +29,7 @@
 define({
     'TITLE':            'Occurrences Marker Voorkeuren',
     'ENABLED':          'Markering aan',
+    'TIME_INTERVAL':    'sec wachten voor markering',
     'EXCLUDE':          'Sluit de volgende bestandstypen van markering uit',
     'SELECTED_ONLY':    'Mark alleen geselecteerde tekst en niet het woord onder de cursor',
     'BACKGROUND_COLOR': 'Markering achtergrondkleur',

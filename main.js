@@ -43,16 +43,18 @@ define(function (require, exports, module) {
         PREFERENCES_TEMPLATE = require('text!htmlContent/preferences.html'),
         STRINGS              = require('strings'),
 
-        cursor_events        = 0,
+        cursor_last          = 0,
         ticker_interval      = 0,
-        tick_events          = 0,
+        anim_last            = 0,
         occurrences          = [],
         occurrences_for      = '',
         prefs                = PreferencesManager.getExtensionPrefs(PREFERENCES),
         prefsBackgroundColor,
         prefsEnabled         = true,
         prefsAnim            = true,
-        prefsLanguageEnabled = true;
+        prefsLanguageEnabled = true,
+        prefsSelectedOnly    = true,
+        prefsTimeInterval    = 1;
 
     function clearOccurrences(editor) {
         occurrences_for = '';
@@ -105,7 +107,10 @@ define(function (require, exports, module) {
             poss        = [];
 
         if (word.length === 0) {
-            if (prefs.get('selected_only')) { return; }
+            if (prefsSelectedOnly) {
+                clearOccurrences(editor);
+                return;
+            }
             while (start && CodeMirror.isWordChar(line.charAt(start - 1))) { start = start - 1; }
             while (end < line.length && CodeMirror.isWordChar(line.charAt(end))) { end = end + 1; }
             if (start === end) { return; }
@@ -132,23 +137,19 @@ define(function (require, exports, module) {
     function ticker() {
         var $marks;
 
-        if (cursor_events === 0) {
-            cursor_events = -1;
+        if (Date.now() - cursor_last > prefsTimeInterval * 1000) {
+            cursor_last = Date.now();
             findOccurrences();
-        } else if (cursor_events > 0) {
-            cursor_events = 0;
         }
 
         if (!prefsAnim) { return; }
         if (occurrences.length === 0) { return; }
-        tick_events = tick_events + 1;
-        if ((tick_events % 3) === 0) {
-            tick_events = 0;
-            $marks = $('.thevirtualeuoccur-highlighting .thevirtualeuoccur');
-            $marks.animate({opacity : 0.5}, 400, function () {
-                $marks.animate({opacity : 1}, 400);
-            });
-        }
+        if (Date.now() - anim_last < 4000) { return; }
+        anim_last = Date.now();
+        $marks = $('.thevirtualeuoccur-highlighting .thevirtualeuoccur');
+        $marks.animate({opacity : 0.5}, 200, function () {
+            $marks.animate({opacity : 1}, 200);
+        });
     }
 
     function applyNewSettings() {
@@ -162,6 +163,8 @@ define(function (require, exports, module) {
         prefsEnabled         = prefs.get('enabled');
         prefsLanguageEnabled = !(language._isBinary || prefs.get('exclude_' + language._id));
         prefsAnim            = prefs.get('anim');
+        prefsSelectedOnly    = prefs.get('selected_only');
+        prefsTimeInterval    = prefs.get('time_interval');
 
         $('head style').each(function () {
             if ($(this).text().indexOf('.thevirtualeuoccur-prefapply') >= 0) {
@@ -178,14 +181,16 @@ define(function (require, exports, module) {
         if (!prefsEnabled) { return; }
         if (!prefsLanguageEnabled) { return; }
 
-        ticker_interval = setInterval(ticker, 1000);
+        ticker_interval = setInterval(ticker, 500);
     }
 
     function handleNewCursorPosition($event, editor, event) {
         if (!prefsEnabled) { return; }
         if (!prefsLanguageEnabled) { return; }
 
-        cursor_events = cursor_events + 2;
+        cursor_last = Date.now();
+
+        if (!prefsSelectedOnly) { return; }
         if (editor.hasSelection()) {
             ticker();
         }
@@ -218,7 +223,8 @@ define(function (require, exports, module) {
                 enabled: prefs.get('enabled'),
                 selected_only: prefs.get('selected_only'),
                 background_color: prefs.get('background_color'),
-                anim: prefs.get('anim')
+                anim: prefs.get('anim'),
+                time_interval: prefs.get('time_interval')
             },
             dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(PREFERENCES_TEMPLATE, context)),
             $dlg = dialog.getElement(),
@@ -248,6 +254,11 @@ define(function (require, exports, module) {
                 prefs.set('selected_only', $dlg.find('#thevirtualeuoccurSelectedOnly').prop('checked'));
                 prefs.set('background_color', bgc);
                 prefs.set('anim', $dlg.find('#thevirtualeuoccurAnim').prop('checked'));
+                lan = parseFloat($dlg.find('#thevirtualeuoccurTimeInterval').val(), 10);
+                if (isNaN(lan)) { lan = 1; }
+                if (lan < 0.5) { lan = 0.5; }
+                if (lan > 10) { lan = 10; }
+                prefs.set('time_interval', lan);
                 for (lan in langs) {
                     if (langs.hasOwnProperty(lan)) {
                         prefs.set('exclude_' + lan, $dlg.find('#thevirtualeuoccurExclude_' + lan).prop('checked'));
@@ -265,6 +276,7 @@ define(function (require, exports, module) {
         prefs.definePreference('selected_only', 'boolean', false);
         prefs.definePreference('background_color', 'string', prefsBackgroundColor);
         prefs.definePreference('anim', 'boolean', false);
+        prefs.definePreference('time_interval', 'number', 1);
         var langs = LanguageManager.getLanguages(), lang;
         for (lang in langs) {
             if (langs.hasOwnProperty(lang)) {

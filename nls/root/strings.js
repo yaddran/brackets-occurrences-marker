@@ -29,7 +29,7 @@
 define({
     'TITLE':            'Occurrences Marker Preferences',
     'ENABLED':          'Mark occurrences',
-    'TIME_INTERVAL':    'sec to wait before marking',
+    'TIME_INTERVAL':    'sec to wait before marking (0sec - 10sec)',
     'EXCLUDE':          'Exclude the following file types from marking',
     'SELECTED_ONLY':    'Mark only selected text and not the word under cursor',
     'BACKGROUND_COLOR': 'Markings background color',

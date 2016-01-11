@@ -29,7 +29,7 @@
 define({
     'TITLE':            'Occurrences Marker Podesavanja',
     'ENABLED':          'Oznaci pojavljivanja',
-    'TIME_INTERVAL':    'sec sacekti pre oznacavanja',
+    'TIME_INTERVAL':    'sec sacekti pre oznacavanja (0sec - 10sec)',
     'EXCLUDE':          'Izuzmi sledece tipove datoteka od oznacavanja',
     'SELECTED_ONLY':    'Oznaci samo selektovani tekst, a ne i rec pod kursorom',
     'BACKGROUND_COLOR': 'Boja pozadine oznaka',

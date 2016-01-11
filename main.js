@@ -137,7 +137,7 @@ define(function (require, exports, module) {
     function ticker() {
         var $marks;
 
-        if (Date.now() - cursor_last > prefsTimeInterval * 1000) {
+        if (((prefsTimeInterval === 0) && (cursor_last === 0)) || ((prefsTimeInterval > 0) && (Date.now() - cursor_last > prefsTimeInterval * 1000))) {
             cursor_last = Date.now();
             findOccurrences();
         }
@@ -181,7 +181,7 @@ define(function (require, exports, module) {
         if (!prefsEnabled) { return; }
         if (!prefsLanguageEnabled) { return; }
 
-        ticker_interval = setInterval(ticker, 500);
+        ticker_interval = setInterval(ticker, 100);
     }
 
     function handleNewCursorPosition($event, editor, event) {
@@ -189,6 +189,10 @@ define(function (require, exports, module) {
         if (!prefsLanguageEnabled) { return; }
 
         cursor_last = Date.now();
+        if (prefsTimeInterval === 0) {
+            cursor_last = 0;
+            ticker();
+        }
 
         if (!prefsSelectedOnly) { return; }
         if (editor.hasSelection()) {
@@ -255,8 +259,8 @@ define(function (require, exports, module) {
                 prefs.set('background_color', bgc);
                 prefs.set('anim', $dlg.find('#thevirtualeuoccurAnim').prop('checked'));
                 lan = parseFloat($dlg.find('#thevirtualeuoccurTimeInterval').val(), 10);
-                if (isNaN(lan)) { lan = 1; }
-                if (lan < 0.5) { lan = 0.5; }
+                if (isNaN(lan)) { lan = 0.2; }
+                if (lan < 0) { lan = 0.2; }
                 if (lan > 10) { lan = 10; }
                 prefs.set('time_interval', lan);
                 for (lan in langs) {

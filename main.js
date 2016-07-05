@@ -156,7 +156,8 @@ define(function (require, exports, module) {
         clearInterval(ticker_interval);
 
         var editor = EditorManager.getCurrentFullEditor(),
-            language = editor.document.getLanguage();
+            language = editor.document.getLanguage(),
+            prfs;
 
         clearOccurrences(editor);
 
@@ -173,9 +174,16 @@ define(function (require, exports, module) {
         });
 
         if (prefs.get('background_color') !== prefsBackgroundColor) {
-            ExtensionUtils.addEmbeddedStyleSheet(
-                '.thevirtualeuoccur-prefapply, .thevirtualeuoccur-highlighting .marking {background-color: ' + prefs.get('background_color') + ';}'
-            );
+            prfs = prefs.get('background_color');
+            if (prfs.charAt(0) === '#') {
+                ExtensionUtils.addEmbeddedStyleSheet(
+                    '.thevirtualeuoccur-prefapply, .thevirtualeuoccur-highlighting .marking {background-color: ' + prfs + ';}'
+                );
+            } else {
+                ExtensionUtils.addEmbeddedStyleSheet(
+                    '.thevirtualeuoccur-prefapply, .thevirtualeuoccur-highlighting .marking {' + prfs + '}'
+                );
+            }
         }
 
         if (!prefsEnabled) { return; }
@@ -232,17 +240,22 @@ define(function (require, exports, module) {
             },
             dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(PREFERENCES_TEMPLATE, context)),
             $dlg = dialog.getElement(),
+            ex,
             langs,
-            lang;
+            lang,
+            langex;
 
         langs = LanguageManager.getLanguages();
+        ex = prefs.get('exclude');
+        if (!ex) { ex = {}; }
         for (lang in langs) {
             if (langs.hasOwnProperty(lang)) {
+                langex = ex.hasOwnProperty(lang) ? ex[lang] : false;
                 $dlg.find('#thevirtualeuoccurExcludeChecklist')
                     .append('<input id="thevirtualeuoccurExclude_' +
                                 lang +
                             '" type="checkbox"' +
-                            (prefs.get('exclude_' + lang) ? 'checked="checked"' : ' ') +
+                            (langex ? 'checked="checked"' : ' ') +
                             '/> ' +
                                 langs[lang]._name +
                             '<br/>');
@@ -252,7 +265,8 @@ define(function (require, exports, module) {
         dialog.done(function (buttonId) {
             if (buttonId === Dialogs.DIALOG_BTN_OK) {
                 var lan,
-                    bgc = $.trim($dlg.find('#thevirtualeuoccurBackgroundColor').val()).toLocaleLowerCase();
+                    bgc = $.trim($dlg.find('#thevirtualeuoccurBackgroundColor').val()).toLocaleLowerCase(),
+                    exc = {};
                 if (bgc.length === 0) { bgc = 'transparent'; }
                 prefs.set('enabled', $dlg.find('#thevirtualeuoccurEnabled').prop('checked'));
                 prefs.set('selected_only', $dlg.find('#thevirtualeuoccurSelectedOnly').prop('checked'));
@@ -265,22 +279,24 @@ define(function (require, exports, module) {
                 prefs.set('time_interval', lan);
                 for (lan in langs) {
                     if (langs.hasOwnProperty(lan)) {
-                        prefs.set('exclude_' + lan, $dlg.find('#thevirtualeuoccurExclude_' + lan).prop('checked'));
+                        exc[lan] = $dlg.find('#thevirtualeuoccurExclude_' + lan).prop('checked');
                     }
                 }
+                prefs.set('exclude', exc);
                 applyNewSettings();
             }
         });
     }
 
     AppInit.appReady(function () {
-        prefsBackgroundColor = STYLES.split('marking_back_color')[1];
+        prefsBackgroundColor = STYLES.split(' marking_back_color ')[1];
 
         prefs.definePreference('enabled', 'boolean', true);
         prefs.definePreference('selected_only', 'boolean', false);
         prefs.definePreference('background_color', 'string', prefsBackgroundColor);
         prefs.definePreference('anim', 'boolean', false);
-        prefs.definePreference('time_interval', 'number', 1);
+        prefs.definePreference('time_interval', 'number', 0.2);
+        prefs.definePreference('exclude', 'object', {});
         var langs = LanguageManager.getLanguages(), lang;
         for (lang in langs) {
             if (langs.hasOwnProperty(lang)) {

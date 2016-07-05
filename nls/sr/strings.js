@@ -32,7 +32,7 @@ define({
     'TIME_INTERVAL':    'sec sacekti pre oznacavanja (0sec - 10sec)',
     'EXCLUDE':          'Izuzmi sledece tipove datoteka od oznacavanja',
     'SELECTED_ONLY':    'Oznaci samo selektovani tekst, a ne i rec pod kursorom',
-    'BACKGROUND_COLOR': 'Boja pozadine oznaka',
+    'BACKGROUND_COLOR': 'Boja pozadine ili CSS stil oznaka',
     'ANIM':             'Animiraj oznake',
     'CANCEL':           'odustani',
     'DONE':             'gotovo'

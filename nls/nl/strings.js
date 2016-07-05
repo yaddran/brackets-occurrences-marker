@@ -32,7 +32,7 @@ define({
     'TIME_INTERVAL':    'sec wachten voor markering (0sec - 10sec)',
     'EXCLUDE':          'Sluit de volgende bestandstypen van markering uit',
     'SELECTED_ONLY':    'Mark alleen geselecteerde tekst en niet het woord onder de cursor',
-    'BACKGROUND_COLOR': 'Markering achtergrondkleur',
+    'BACKGROUND_COLOR': 'Markering achtergrondkleur of CSS stijl',
     'ANIM':             'Markering animeren',
     'CANCEL':           'annuleren',
     'DONE':             'klaar'

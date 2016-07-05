@@ -22,3 +22,21 @@ Usage
 The extension has its own preferences dialog. Go to (Edit -> Occurrences Marker Preferences). You can enable/disable the extension, exclude certain file types, choose marking mode and setup how to mark the occurrences.
 
 Selected text is marked at once. Marking the word under cursor can be delayed to allow normal editing.
+
+
+Change Log
+----------
+
+2016-07-05
+- Exclude preferences are now an array. You can clean old thevirtualeuoccur.preferences.exclude_* from your brackers.json
+- Background color setting can contain CSS styles
+- Initial background setting is: background-color: #555; opacity: 0.7; border-radius: 6px;
+
+2016-01-11
+- Allow time interval to be set from 0sec to 10sec.
+- 0sec interval wil cause instant marking.
+- Default value is set to 0.2sec.
+
+2016-01-07
+- Added configurable time interval.
+- Fixed unmarking.
